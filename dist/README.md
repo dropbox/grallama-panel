@@ -1,8 +1,3 @@
-# Grafana GraLLAMA Panel
-
-!(logo-large)[https://raw.githubusercontent.com/dropbox/grallama-panel/master/src/img/grallama-logo-large.png]
-
-
 Use the new grafana-cli tool to install grallama-panel from the commandline:
 
 ```
