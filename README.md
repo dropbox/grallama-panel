@@ -1,8 +1,11 @@
 # Grafana GraLLAMA Panel
 
-![logo-large](https://raw.githubusercontent.com/dropbox/grallama-panel/master/src/img/grallama-logo-large.png)
+![logo-large](src/img/grallama-logo-large.png)
 
-GraLLAMA is a panel plugin for Grafana which visualizes the matrix-like data LLAMA collects.
+GraLLAMA is a panel plugin for Grafana which visualizes the matrix-like data
+[LLAMA](https://github.com/dropbox/llama) collects.
+
+![example1](src/img/grallama-example.png)
 
 
 Use the new grafana-cli tool to install grallama-panel from the commandline:
