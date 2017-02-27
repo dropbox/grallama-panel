@@ -19,6 +19,7 @@ This panel should work with the following datasources:
 ## Caveats
 1. Colors are hard-coded currently; ranges from **green**(0%) to **red**(10%)
 2. Panel setup is non-intuitive and strict (see Setup section below)
+3. No dynamic functionality or graphs
 
 ## Installation
 Use the new grafana-cli tool to install grallama-panel from the commandline:
