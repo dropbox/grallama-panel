@@ -1,0 +1,31 @@
+{
+  "type": "panel",
+  "name": "GraLLAMA",
+  "id": "dropbox-grallama-panel",
+
+  "info": {
+    "description": "Matrix-like display for LLAMA data",
+    "author": {
+      "name": "Dropbox, Inc."
+    },
+    "keywords": ["llama", "loss", "latency", "matrix", "panel"],
+    "logos": {
+      "small": "src/img/grallama-logo-small.png",
+      "large": "src/img/grallama-logo-large.png"
+    },
+    "links": [
+      {"name": "Project site", "url": "https://github.com/dropbox/grallama-panel"},
+      {"name": "Apache 2.0 License", "url": "https://github.com/dropbox/grallama-panel/blob/master/LICENSE"}
+    ],
+    "screenshots": [
+        {"name": "Example1", "path": "src/img/grallama-example.png"}
+    ],
+    "version": "0.0.1",
+    "updated": "2017-02-21"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}
