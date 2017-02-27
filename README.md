@@ -37,4 +37,15 @@ You need the lastest grafana build for Grafana 3.0 to enable plugin support.
 You can get it here : http://grafana.org/download/builds.html
 
 ## Setup
-*TBD*
+After installing the panel plugin follow these instructions to visualize
+the latest loss data from your running LLAMA deployment.
+
+0. Setup a datasource for InfluxDB where LLAMA data is stored.
+1. Add a new panel to a row in Grafana and select GraLLAMA.
+2. Open the query editor and select InfluxDB and the measurement `loss`.
+3. Select `mean()` as an aggregation (or others if you see fit).
+4. Select `Group by` using exactly two tags; one of them will be the source
+tag and the other will be the destination tag. Also, use `fill(null)`.
+5. Type into the `Alias by` field `<source_tag>-<dest_tag>` (the hypen is
+important). If your source tag was `foo` and destination tag was `bar` then
+the field would look like this:  `$tag_foo-$tag_bar`
