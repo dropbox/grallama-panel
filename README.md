@@ -3,7 +3,8 @@
 <img src="src/img/grallama-logo-large.png" align="right" width="100px">
 
 GraLLAMA is a panel plugin for Grafana which visualizes the matrix-like data
-collected by the [LLAMA](https://github.com/dropbox/llama) project.
+collected by the [LLAMA](https://github.com/dropbox/llama) project. See the
+LLAMA project on GitHub for more information: https://github.com/dropbox/llama
 
 ## Features
 * Displays loss percentages between sources and destinations.
