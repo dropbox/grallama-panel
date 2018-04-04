@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/module.js"],"names":["GraLLAMACtrl"],"mappings":";;;;;;;;AAAQA,kB,kBAAAA,Y;;;2BAGNA,Y","file":"module.js","sourcesContent":["import {GraLLAMACtrl} from './grallama_ctrl';\n\nexport {\n  GraLLAMACtrl as PanelCtrl\n};\n\n"]}
+{"version":3,"sources":["../src/module.js"],"names":["GraLLAMACtrl"],"mappings":";;;;;;;;AAAQA,kB,kBAAAA,Y;;;2BAGNA,Y","file":"module.js","sourcesContent":["import {GraLLAMACtrl} from './grallama_ctrl';\n\nexport {\n  GraLLAMACtrl as PanelCtrl\n};\n"]}

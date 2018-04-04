@@ -32,11 +32,15 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
 	    threshold: 0.0,
 	    label: 'Others'
 	  },
-      colorMap: {
-          limits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-          colors: ['#6ea009', "#D9A303", "#D38E02", "#CE7A02", "#C86501", "#C35101",
-                   "#BD3D01", "#B82800", "#B21400", "#AD0000"],
-      },
+      colorBackground: true,
+      colorValue: false,
+	  colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
+      thresholds: '0,0.2,1,5,99',
+      // colorMap: {
+      //     limits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      //     colors: ['#6ea009', "#D9A303", "#D38E02", "#CE7A02", "#C86501", "#C35101",
+      //              "#BD3D01", "#B82800", "#B21400", "#AD0000"],
+      // },
     };
 
     _.defaults(this.panel, panelDefaults);
@@ -50,7 +54,8 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
-    this.addEditorTab('Options', 'public/plugins/dropbox-grallama-panel/editor.html', 2);
+    this.addEditorTab('Axes', 'public/plugins/dropbox-grallama-panel/axes_editor.html', 2);
+    this.addEditorTab('Options', 'public/plugins/dropbox-grallama-panel/options_editor.html', 3);
     this.unitFormats = kbn.getUnitFormats();
   }
 
@@ -76,32 +81,46 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
   }
 
   parseMatrix(series) {
-      var colormap = this.panel.colorMap;
+      // var colormap = this.panel.colorMap;
       var hash = {};
-      var srcs = new Set();
+      var srcs = new Set(); // This doesn't seem to be getting used
       var dsts = new Set();
-      var color;
+      let colorBackground = this.panel.colorBackground;
+      let colorValue = this.panel.colorValue;
+      let thresholds = this.panel.thresholds.split(',').map(function(strVale) {
+        return Number(strVale.trim());
+      });
+	  // Because `this` is magical and doesn't work in the loop below
+	  let colors = this.panel.colors
       hash['data'] = {};
       angular.forEach(series, function(datapoint) {
           var datavalue = Number(datapoint.stats.current).toFixed(1);
           var [src, dst] = datapoint.label.split('-');
+          var fgColor;
+          var bgColor;
           srcs.add(src);
           dsts.add(dst);
           if (hash['data'][src] === undefined) {
               hash['data'][src] = {};
           }
-          angular.forEach(colormap.limits, function(limit, i) {
-              if ((datavalue >= limit && datavalue < colormap.limits[i+1]) ||
-                 (datavalue >= limit && colormap.limits[i+1] === undefined)) {
-                  color = colormap.colors[i];
-              }
-          });
+          if (colorBackground || colorValue) {
+              let color = colors[0]; // Start with the base, and update if greater than thresholds
+              angular.forEach(thresholds, function(limit, i) {
+                if (datavalue >= limit) { color = colors[i+1]; }
+              });
+              if (colorBackground) { bgColor = color; }
+              if (colorValue) { fgColor = color; }
+          }
           hash['data'][src][dst] = {
               value: datavalue,
-              color: color
+              style: {
+                "color": fgColor,
+                "background-color": bgColor,
+              },
           };
       });
-      hash['dsts'] = Array.from(dsts);
+      // Get the unique values and sort
+      hash['dsts'] = Array.from(dsts).sort();
       return hash;
   }
 
@@ -135,6 +154,38 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
   link(scope, elem, attrs, ctrl) {
     rendering(scope, elem, attrs, ctrl);
   }
+
+// Stolen from SingleStat
+// Try to subclass at some point to get this for free
+// I don't think we're actually using this specific option at the moment.
+  setColoring(options) {
+    if (options.background) {
+      this.panel.colorValue = false;
+      this.panel.colors = ['rgba(71, 212, 59, 0.4)', 'rgba(245, 150, 40, 0.73)', 'rgba(225, 40, 40, 0.59)'];
+    } else {
+      this.panel.colorBackground = false;
+      this.panel.colors = ['rgba(50, 172, 45, 0.97)', 'rgba(237, 129, 40, 0.89)', 'rgba(245, 54, 54, 0.9)'];
+    }
+    this.render();
+  }
+
+  invertColorOrder() {
+    // This seems to be designed for only 3
+    // var tmp = this.panel.colors[0];
+    // this.panel.colors[0] = this.panel.colors[2];
+    // this.panel.colors[2] = tmp;
+	// This is so much cleaner, easier, and scalable
+	this.panel.colors.reverse()
+    this.render();
+  }
+
+  onColorChange(panelColorIndex) {
+    return color => {
+      this.panel.colors[panelColorIndex] = color;
+      this.render();
+    };
+  }
+
 }
 
 GraLLAMACtrl.templateUrl = 'module.html';
