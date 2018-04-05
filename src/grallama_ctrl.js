@@ -32,6 +32,7 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
 	    threshold: 0.0,
 	    label: 'Others'
 	  },
+      tooltipHover: false,
       colorBackground: true,
       colorValue: false,
 	  colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
@@ -156,6 +157,9 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
           col++;
           // Confirm this plays nice if there is no matching entry
           let cell = Object.assign({}, hash['data'][src][dst]);
+          cell['tooltip'] = this.panel.tooltipHover;
+          cell['src'] = src;
+          cell['dst'] = dst;
           // If this cell didn't exist, we'd have no style, so ensure that exists
           if (!('style' in cell)) {
             cell['style'] = {};
@@ -167,7 +171,6 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
           // but if we really wanted to do this, it would be easier
           // to just not have a value
           // cell['style']['font-size'] = "0";
-          console.log(cell);
           hash['cells'].push(cell)
         }
       }

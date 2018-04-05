@@ -136,6 +136,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
               threshold: 0.0,
               label: 'Others'
             },
+            tooltipHover: false,
             colorBackground: true,
             colorValue: false,
             colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
@@ -315,6 +316,9 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
                     col++;
                     // Confirm this plays nice if there is no matching entry
                     var cell = Object.assign({}, hash['data'][src][_dst]);
+                    cell['tooltip'] = this.panel.tooltipHover;
+                    cell['src'] = src;
+                    cell['dst'] = _dst;
                     // If this cell didn't exist, we'd have no style, so ensure that exists
                     if (!('style' in cell)) {
                       cell['style'] = {};
@@ -326,7 +330,6 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
                     // but if we really wanted to do this, it would be easier
                     // to just not have a value
                     // cell['style']['font-size'] = "0";
-                    console.log(cell);
                     hash['cells'].push(cell);
                   }
                 } catch (err) {

@@ -1,7 +1,14 @@
 <div class="graph-wrapper">
   <div class="graph-canvas-wrapper">
     <div class="matrix-panel">
-      <div class="grid-cell" ng-repeat="cell in ctrl.matrix.cells" ng-style="cell.style">{{ cell.value }}</div>
+      <div class="grid-cell" ng-repeat="cell in ctrl.matrix.cells" ng-style="cell.style">
+        {{ cell.value }}
+        <span class="matrix-tooltip" ng-if="cell.tooltip">
+          Src: {{ cell.src }}<br/>
+          Dst: {{ cell.dst }}<br/>
+          Value: {{ cell.value }}
+        </span>
+    </div>
     </div>
   </div>
 </div>

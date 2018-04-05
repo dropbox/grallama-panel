@@ -32,4 +32,27 @@
   /* Could modify this to keep things tighter */
   padding: 0.5em;
   text-align: center;
+  position: relative;  /* Required for the tooltip */
+}
+
+.grid-cell .matrix-tooltip {
+    visibility: hidden;
+    /* width: 120px; */
+    white-space: nowrap;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+    border-radius: 6px;
+    /* Positioning of the tooltip */
+    position: absolute;
+    z-index: 1;
+    /* Maybe add for other positioning, but leave for now
+    top: 100%;
+    left: 50%;
+    margin-left: -60px; */
+}
+
+.grid-cell:hover .matrix-tooltip {
+  visibility: visible;
 }
