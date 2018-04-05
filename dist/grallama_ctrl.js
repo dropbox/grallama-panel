@@ -205,6 +205,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             // Because `this` is magical and doesn't work in the loop below
             var colors = this.panel.colors;
             hash['data'] = {};
+            hash['cells'] = [];
             angular.forEach(series, function (datapoint) {
               var datavalue = Number(datapoint.stats.current).toFixed(1);
 
@@ -242,7 +243,124 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
                 }
               };
             });
-            // Get the unique values and sort
+
+            // Create the column headings first
+            var row = 1;
+            var col = 1;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = Array.from(dsts).sort()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var dst = _step.value;
+
+                col++; // Start 1 cell in, like the data
+                hash['cells'].push({
+                  value: dst,
+                  style: {
+                    "grid-row": row.toString(),
+                    "grid-column": col.toString()
+                    // Leave this out for column headers, since we're okay with those stacking a bit
+                    // "white-space": "nowrap",  // Should move this into CSS
+                  }
+                });
+              }
+
+              // Add the cells
+              // TODO(dmar): Just save these sorted values
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
+            }
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+              for (var _iterator2 = Array.from(srcs).sort()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var src = _step2.value;
+
+                row++;
+                col = 1; // This needs to be reset for each row
+                // Add a cell for the row header
+                hash['cells'].push({
+                  value: src,
+                  style: {
+                    "grid-row": row.toString(),
+                    "grid-column": col.toString(),
+                    "white-space": "nowrap", // Should move this into CSS
+                    "text-align": "right" // Should move this into CSS
+                  }
+                });
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
+
+                try {
+                  for (var _iterator3 = Array.from(dsts).sort()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var _dst = _step3.value;
+
+                    col++;
+                    // Confirm this plays nice if there is no matching entry
+                    var cell = Object.assign({}, hash['data'][src][_dst]);
+                    // If this cell didn't exist, we'd have no style, so ensure that exists
+                    if (!('style' in cell)) {
+                      cell['style'] = {};
+                    }
+                    // These only work if they're strings, otherwise they get silently ignored
+                    cell['style']['grid-row'] = row.toString();
+                    cell['style']['grid-column'] = col.toString();
+                    // This is a simple way to stop displaying the text
+                    // but if we really wanted to do this, it would be easier
+                    // to just not have a value
+                    // cell['style']['font-size'] = "0";
+                    console.log(cell);
+                    hash['cells'].push(cell);
+                  }
+                } catch (err) {
+                  _didIteratorError3 = true;
+                  _iteratorError3 = err;
+                } finally {
+                  try {
+                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                      _iterator3.return();
+                    }
+                  } finally {
+                    if (_didIteratorError3) {
+                      throw _iteratorError3;
+                    }
+                  }
+                }
+              }
+
+              // Get the unique values and sort
+            } catch (err) {
+              _didIteratorError2 = true;
+              _iteratorError2 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                  _iterator2.return();
+                }
+              } finally {
+                if (_didIteratorError2) {
+                  throw _iteratorError2;
+                }
+              }
+            }
+
             hash['dsts'] = Array.from(dsts).sort();
             return hash;
           }

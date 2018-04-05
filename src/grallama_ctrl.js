@@ -93,6 +93,7 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
 	  // Because `this` is magical and doesn't work in the loop below
 	  let colors = this.panel.colors
       hash['data'] = {};
+      hash['cells'] = [];
       angular.forEach(series, function(datapoint) {
           var datavalue = Number(datapoint.stats.current).toFixed(1);
           var [src, dst] = datapoint.label.split('-');
@@ -119,6 +120,58 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
               },
           };
       });
+
+      // Create the column headings first
+      let row = 1;
+      let col = 1;
+      for (let dst of Array.from(dsts).sort()) {
+        col++;  // Start 1 cell in, like the data
+        hash['cells'].push({
+          value: dst,
+          style: {
+            "grid-row": row.toString(),
+            "grid-column": col.toString(),
+            // Leave this out for column headers, since we're okay with those stacking a bit
+            // "white-space": "nowrap",  // Should move this into CSS
+          }
+        });
+      }
+
+      // Add the cells
+      // TODO(dmar): Just save these sorted values
+      for (let src of Array.from(srcs).sort()) {
+        row++;
+        col = 1; // This needs to be reset for each row
+        // Add a cell for the row header
+        hash['cells'].push({
+          value: src,
+          style: {
+            "grid-row": row.toString(),
+            "grid-column": col.toString(),
+            "white-space": "nowrap",  // Should move this into CSS
+            "text-align": "right",  // Should move this into CSS
+          }
+        });
+        for (let dst of Array.from(dsts).sort()) {
+          col++;
+          // Confirm this plays nice if there is no matching entry
+          let cell = Object.assign({}, hash['data'][src][dst]);
+          // If this cell didn't exist, we'd have no style, so ensure that exists
+          if (!('style' in cell)) {
+            cell['style'] = {};
+          }
+          // These only work if they're strings, otherwise they get silently ignored
+          cell['style']['grid-row'] = row.toString();
+          cell['style']['grid-column'] = col.toString();
+          // This is a simple way to stop displaying the text
+          // but if we really wanted to do this, it would be easier
+          // to just not have a value
+          // cell['style']['font-size'] = "0";
+          console.log(cell);
+          hash['cells'].push(cell)
+        }
+      }
+
       // Get the unique values and sort
       hash['dsts'] = Array.from(dsts).sort();
       return hash;

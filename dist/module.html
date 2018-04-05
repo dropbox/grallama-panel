@@ -1,22 +1,7 @@
 <div class="graph-wrapper">
   <div class="graph-canvas-wrapper">
-    <div class="matrix-panel" style="postion: relative; padding: 0;">
-      <table class="table-panel-table">
-        <tr>
-          <td>{{ ctrl.panel.yAxisLabel }}</td>
-          <td colspan="99" align="center">{{ ctrl.panel.xAxisLabel }}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td ng-repeat="dst in ctrl.matrix.dsts">{{ dst }}</td>
-        </tr>
-        <tr ng-repeat="(src, dsts) in ctrl.matrix.data">
-          <td>{{ src }}</td>
-          <td ng-repeat="dst in ctrl.matrix.dsts" id="{{src}}-{{dst}}" ng-style="dsts[dst].style">
-            {{ dsts[dst].value }}
-          </td>
-        </tr>
-      </table>
+    <div class="matrix-panel">
+      <div class="grid-cell" ng-repeat="cell in ctrl.matrix.cells" ng-style="cell.style">{{ cell.value }}</div>
     </div>
   </div>
 </div>
