@@ -1,7 +1,5 @@
 import _ from 'lodash';
 import $ from 'jquery';
-import 'jquery.flot';
-import 'jquery.flot.pie';
 
 export default function link(scope, elem, attrs, ctrl) {
   var data, panel, matrix;

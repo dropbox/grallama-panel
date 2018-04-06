@@ -4,8 +4,8 @@
       <div class="grid-cell" ng-repeat="cell in ctrl.matrix.cells" ng-style="cell.style">
         {{ cell.value }}
         <span class="matrix-tooltip" ng-if="cell.tooltip">
-          Src: {{ cell.src }}<br/>
-          Dst: {{ cell.dst }}<br/>
+          {{ ctrl.panel.yAxisLabel }}: {{ cell.yCat }}<br/>
+          {{ ctrl.panel.xAxisLabel }}: {{ cell.xCat }}<br/>
           Value: {{ cell.value }}
         </span>
     </div>

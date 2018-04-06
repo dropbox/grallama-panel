@@ -32,16 +32,13 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
 	    threshold: 0.0,
 	    label: 'Others'
 	  },
-      tooltipHover: false,
-      colorBackground: true,
-      colorValue: false,
+      tooltipHover: false, // Should there be a tooltip for cells
+      colorBackground: true, // Should the cell background be colored
+      colorValue: false, // Should the cell value be colored
 	  colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
       thresholds: '0,0.2,1,5,99',
-      // colorMap: {
-      //     limits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      //     colors: ['#6ea009', "#D9A303", "#D38E02", "#CE7A02", "#C86501", "#C35101",
-      //              "#BD3D01", "#B82800", "#B21400", "#AD0000"],
-      // },
+      xAxisLabel: 'X-Axis',
+      yAxisLabel: 'Y-Axis',
     };
 
     _.defaults(this.panel, panelDefaults);
@@ -82,102 +79,93 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
   }
 
   parseMatrix(series) {
-      // var colormap = this.panel.colorMap;
-      var hash = {};
-      var srcs = new Set(); // This doesn't seem to be getting used
-      var dsts = new Set();
+      var matrix = {};
+      matrix['data'] = {}; // Raw data
+      matrix['cells'] = []; // Cells to render
+      // Unique values for each row and column
+      var yCats = new Set();
+      var xCats = new Set();
+      // These are needed for referencing in loops below
       let colorBackground = this.panel.colorBackground;
       let colorValue = this.panel.colorValue;
       let thresholds = this.panel.thresholds.split(',').map(function(strVale) {
         return Number(strVale.trim());
       });
-	  // Because `this` is magical and doesn't work in the loop below
 	  let colors = this.panel.colors
-      hash['data'] = {};
-      hash['cells'] = [];
+      // Parse all the series into their buckets
       angular.forEach(series, function(datapoint) {
           var datavalue = Number(datapoint.stats.current).toFixed(1);
-          var [src, dst] = datapoint.label.split('-');
-          var fgColor;
-          var bgColor;
-          srcs.add(src);
-          dsts.add(dst);
-          if (hash['data'][src] === undefined) {
-              hash['data'][src] = {};
+          let [yCat, xCat] = datapoint.label.split('-');
+          yCats.add(yCat);
+          xCats.add(xCat);
+          if (!(yCat in matrix.data)) {
+            // Create the object if it doesn't exist
+            matrix.data[yCat] = {};
           }
-          if (colorBackground || colorValue) {
-              let color = colors[0]; // Start with the base, and update if greater than thresholds
-              angular.forEach(thresholds, function(limit, i) {
-                if (datavalue >= limit) { color = colors[i+1]; }
-              });
-              if (colorBackground) { bgColor = color; }
-              if (colorValue) { fgColor = color; }
-          }
-          hash['data'][src][dst] = {
-              value: datavalue,
-              style: {
-                "color": fgColor,
-                "background-color": bgColor,
-              },
-          };
+          matrix.data[yCat][xCat] = datavalue;
       });
 
-      // Create the column headings first
-      let row = 1;
-      let col = 1;
-      for (let dst of Array.from(dsts).sort()) {
-        col++;  // Start 1 cell in, like the data
-        hash['cells'].push({
-          value: dst,
+      // Sort the axis categories
+      yCats = Array.from(yCats).sort();
+      xCats = Array.from(xCats).sort();
+
+      // Create the x axis label cells for the matrix
+      let rowNum = 1;
+      let colNum = 1;
+      for (let xCat of xCats) {
+        colNum++;  // Start 1 cell in, like the data
+        matrix['cells'].push({
+          value: xCat,
           style: {
-            "grid-row": row.toString(),
-            "grid-column": col.toString(),
-            // Leave this out for column headers, since we're okay with those stacking a bit
-            // "white-space": "nowrap",  // Should move this into CSS
+            "grid-row": rowNum.toString(),
+            "grid-column": colNum.toString(),
           }
         });
       }
 
-      // Add the cells
-      // TODO(dmar): Just save these sorted values
-      for (let src of Array.from(srcs).sort()) {
-        row++;
-        col = 1; // This needs to be reset for each row
+      // Create the rest of the rows
+      for (let yCat of yCats) {
+        rowNum++; // Start 1 cell in, like the data
+        colNum = 1; // This needs to be reset for each row
         // Add a cell for the row header
-        hash['cells'].push({
-          value: src,
+        matrix['cells'].push({
+          value: yCat,
           style: {
-            "grid-row": row.toString(),
-            "grid-column": col.toString(),
-            "white-space": "nowrap",  // Should move this into CSS
-            "text-align": "right",  // Should move this into CSS
+            "grid-row": rowNum.toString(),
+            "grid-column": colNum.toString(),
+            "white-space": "nowrap",  // Should move this into external CSS
+            "text-align": "right",  // Should move this into external CSS
           }
         });
-        for (let dst of Array.from(dsts).sort()) {
-          col++;
-          // Confirm this plays nice if there is no matching entry
-          let cell = Object.assign({}, hash['data'][src][dst]);
-          cell['tooltip'] = this.panel.tooltipHover;
-          cell['src'] = src;
-          cell['dst'] = dst;
-          // If this cell didn't exist, we'd have no style, so ensure that exists
-          if (!('style' in cell)) {
-            cell['style'] = {};
+        // Create the data cells
+        for (let xCat of xCats) {
+          colNum++;
+          let value = matrix.data[yCat][xCat];
+          let cell = {
+            'yCat': yCat,
+            'xCat': xCat,
+            'value': value,
+            'tooltip': this.panel.tooltipHover,
+            'style': {
+              // These must be strings, otherwise they get silently ignored
+              'grid-row': rowNum.toString(),
+              'grid-column': colNum.toString(),
+            },
+          };
+          // Add coloring to the cell (if needed) and only if it has a value
+          if ((colorBackground || colorValue) && cell.value) {
+              let color = colors[0]; // Start with the base, and update if greater than thresholds
+              angular.forEach(thresholds, function(limit, i) {
+                if (cell.value >= limit) { color = colors[i+1]; }
+              });
+              if (colorBackground) { cell.style['background-color'] = color; }
+              if (colorValue) { cell.style['color'] = color; }
           }
-          // These only work if they're strings, otherwise they get silently ignored
-          cell['style']['grid-row'] = row.toString();
-          cell['style']['grid-column'] = col.toString();
-          // This is a simple way to stop displaying the text
-          // but if we really wanted to do this, it would be easier
-          // to just not have a value
-          // cell['style']['font-size'] = "0";
-          hash['cells'].push(cell)
+          // Add the cell to the matrix
+          matrix.cells.push(cell)
         }
       }
-
-      // Get the unique values and sort
-      hash['dsts'] = Array.from(dsts).sort();
-      return hash;
+      return matrix;
   }
 
   parseSeries(series) {

@@ -1,6 +1,6 @@
 'use strict';
 
-System.register(['lodash', 'jquery', 'jquery.flot', 'jquery.flot.pie'], function (_export, _context) {
+System.register(['lodash', 'jquery'], function (_export, _context) {
   "use strict";
 
   var _, $;
@@ -52,7 +52,7 @@ System.register(['lodash', 'jquery', 'jquery.flot', 'jquery.flot.pie'], function
       _ = _lodash.default;
     }, function (_jquery) {
       $ = _jquery.default;
-    }, function (_jqueryFlot) {}, function (_jqueryFlotPie) {}],
+    }],
     execute: function () {}
   };
 });

@@ -37,11 +37,9 @@
 
 .grid-cell .matrix-tooltip {
     visibility: hidden;
-    /* width: 120px; */
     white-space: nowrap;
     background-color: black;
-    color: #fff;
-    text-align: center;
+    text-align: left;
     padding: 1em;
     border-radius: 6px;
     /* Positioning of the tooltip */

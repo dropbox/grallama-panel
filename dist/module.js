@@ -13,9 +13,8 @@ System.register(['./grallama_ctrl', 'app/plugins/sdk'], function (_export, _cont
     execute: function () {
 
       loadPluginCss({
-        dark: 'plugins/dropbox-grallama-panel/css/matrix.dark.css'
-        // TODO(dmar): Need to add this
-        // light: 'plugins/grafana-piechart-panel/css/piechart.light.css',
+        dark: 'plugins/dropbox-grallama-panel/css/matrix.css',
+        light: 'plugins/dropbox-grallama-panel/css/matrix.css'
       });
 
       _export('PanelCtrl', GraLLAMACtrl);
