@@ -14,15 +14,11 @@ https://github.com/dropbox/llama
 * Changes cell color based on higher percentages.
 
 ![example1](src/img/grallama-example.png)
+![example1](src/img/grallama-example-2.png)
 
 ## Compatibility
 This panel should work with the following datasources:
 [InfluxDB](https://grafana.net/plugins/influxdb)
-
-## Caveats
-1. Colors are hard-coded currently; ranges from **green**(0%) to **red**(10%)
-2. Panel setup is non-intuitive and strict (see Setup section below)
-3. No dynamic functionality or graphs
 
 ## Installation
 Use the new grafana-cli tool to install grallama-panel from the commandline:

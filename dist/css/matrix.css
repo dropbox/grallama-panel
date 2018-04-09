@@ -1,0 +1,56 @@
+.graph-wrapper {
+  /* This is all to allow scrolling if the matrix
+   * gets too large in any dimension */
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+
+.matrix-panel {
+  display: grid;
+  /* Could modify this to keep things tighter */
+  grid-gap: 2px;
+  /* Using variable units for this results in uneven spacing */
+  /* grid-gap: 0.5em; */
+  /* This version keeps the columns small */
+  grid-auto-columns: min-content;
+  /* This version will take up all the width, but prevents
+   * big ones from taking up too much space */
+  /* grid-auto-columns: minmax(min-content, 1fr); */
+  /* This version is a tighter balance, keeping calls
+   * from getting too wide, unless needed. So this version
+   * won't actually take up the full width with smaller
+   * sets of data */
+  grid-auto-columns: minmax(min-content, 10vmax);
+  /* So headers are kept small if possible.
+   * This only impacts the first column as
+   * long as we're explicitly setting locations */
+  grid-template-columns: min-content;
+}
+
+.matrix-panel .grid-cell {
+  /* Could modify this to keep things tighter */
+  padding: 0.5em;
+  text-align: center;
+  position: relative;  /* Required for the tooltip */
+}
+
+.grid-cell .matrix-tooltip {
+    visibility: hidden;
+    white-space: nowrap;
+    background-color: black;
+    text-align: left;
+    padding: 1em;
+    border-radius: 6px;
+    /* Positioning of the tooltip */
+    position: absolute;
+    z-index: 1;
+    /* Maybe add for other positioning, but leave for now
+    top: 100%;
+    left: 50%;
+    margin-left: -60px; */
+}
+
+.grid-cell:hover .matrix-tooltip {
+  visibility: visible;
+}
