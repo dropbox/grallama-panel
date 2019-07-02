@@ -20,8 +20,8 @@
     "screenshots": [
         {"name": "Example1", "path": "src/img/grallama-example.png"}
     ],
-    "version": "0.1.1",
-    "updated": "2018-04-06"
+    "version": "0.1.2",
+    "updated": "2019-07-02"
   },
 
   "dependencies": {
