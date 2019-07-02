@@ -142,7 +142,8 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
             thresholds: '0,0.2,1,5,99',
             xAxisLabel: 'X-Axis',
-            yAxisLabel: 'Y-Axis'
+            yAxisLabel: 'Y-Axis',
+            separator: '-'
           };
 
           _.defaults(_this.panel, panelDefaults);
@@ -206,11 +207,12 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
               return Number(strVale.trim());
             });
             var colors = this.panel.colors;
+            var separator = this.panel.separator;
             // Parse all the series into their buckets
             angular.forEach(series, function (datapoint) {
               var datavalue = Number(datapoint.stats.current).toFixed(1);
 
-              var _datapoint$label$spli = datapoint.label.split('-'),
+              var _datapoint$label$spli = datapoint.label.split(separator),
                   _datapoint$label$spli2 = _slicedToArray(_datapoint$label$spli, 2),
                   yCat = _datapoint$label$spli2[0],
                   xCat = _datapoint$label$spli2[1];
