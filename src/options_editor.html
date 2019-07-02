@@ -30,6 +30,12 @@
     <div class="gf-form-inline">
       <gf-form-switch class="gf-form" label-class="width-4" label="Hover" checked="ctrl.panel.tooltipHover" on-change="ctrl.render()"></gf-form-switch>
     </div>
+  </div>
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Separator</h5>
+    <div class="gf-form">
+      <span class="gf-form-label width-8">String</span>
+      <input type="text" class="gf-form-input max-width-10" ng-model="ctrl.panel.separator" ng-blur="ctrl.render()">
     </div>
   </div>
 </div>
