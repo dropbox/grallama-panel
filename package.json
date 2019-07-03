@@ -1,6 +1,6 @@
 {
   "name": "GraLLAMA",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Matrix-like display for LLAMA data",
   "main": "src/module.js",
   "keywords": [

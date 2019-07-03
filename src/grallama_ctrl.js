@@ -28,17 +28,18 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       valueName: 'current',
       strokeWidth: 1,
       fontSize: '60%',
-	  combine: {
-	    threshold: 0.0,
-	    label: 'Others'
-	  },
+      combine: {
+        threshold: 0.0,
+        label: 'Others'
+      },
       tooltipHover: false, // Should there be a tooltip for cells
       colorBackground: true, // Should the cell background be colored
       colorValue: false, // Should the cell value be colored
-	  colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
+      colors: ['#6ea009', "#D38E02", "#C86501", "#BD3D01", "#AD0000"],
       thresholds: '0,0.2,1,5,99',
       xAxisLabel: 'X-Axis',
       yAxisLabel: 'Y-Axis',
+      separator: '-',
     };
 
     _.defaults(this.panel, panelDefaults);
@@ -91,18 +92,19 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       let thresholds = this.panel.thresholds.split(',').map(function(strVale) {
         return Number(strVale.trim());
       });
-	  let colors = this.panel.colors
+      let colors = this.panel.colors;
+      let separator = this.panel.separator;
       // Parse all the series into their buckets
       angular.forEach(series, function(datapoint) {
-          var datavalue = Number(datapoint.stats.current).toFixed(1);
-          let [yCat, xCat] = datapoint.label.split('-');
-          yCats.add(yCat);
-          xCats.add(xCat);
-          if (!(yCat in matrix.data)) {
-            // Create the object if it doesn't exist
-            matrix.data[yCat] = {};
-          }
-          matrix.data[yCat][xCat] = datavalue;
+      var datavalue = Number(datapoint.stats.current).toFixed(1);
+      let [yCat, xCat] = datapoint.label.split(separator);
+      yCats.add(yCat);
+      xCats.add(xCat);
+      if (!(yCat in matrix.data)) {
+        // Create the object if it doesn't exist
+        matrix.data[yCat] = {};
+      }
+      matrix.data[yCat][xCat] = datavalue;
       });
 
       // Sort the axis categories
@@ -218,8 +220,8 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
     // var tmp = this.panel.colors[0];
     // this.panel.colors[0] = this.panel.colors[2];
     // this.panel.colors[2] = tmp;
-	// This is so much cleaner, easier, and scalable
-	this.panel.colors.reverse()
+    // This is so much cleaner, easier, and scalable
+    this.panel.colors.reverse();
     this.render();
   }
 
