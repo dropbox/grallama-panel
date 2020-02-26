@@ -129,7 +129,8 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             legendType: 'Under graph',
             aliasColors: {},
             format: 'short',
-            valueName: 'current',
+            valueName: 'avg',
+            valueNameOptions: [{ text: "Min", value: "min" }, { text: "Max", value: "max" }, { text: "Average", value: "avg" }, { text: "Current", value: "current" }, { text: "Total", value: "total" }],
             strokeWidth: 1,
             fontSize: '60%',
             combine: {
@@ -208,9 +209,11 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             });
             var colors = this.panel.colors;
             var separator = this.panel.separator;
+            var valueName = this.panel.valueName;
             // Parse all the series into their buckets
             angular.forEach(series, function (datapoint) {
-              var datavalue = Number(datapoint.stats.current).toFixed(1);
+              var agg = datapoint.stats[valueName];
+              var datavalue = Number(agg).toFixed(1);
 
               var _datapoint$label$spli = datapoint.label.split(separator),
                   _datapoint$label$spli2 = _slicedToArray(_datapoint$label$spli, 2),

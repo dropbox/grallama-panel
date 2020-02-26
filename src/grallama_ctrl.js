@@ -25,7 +25,14 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       legendType: 'Under graph',
       aliasColors: {},
       format: 'short',
-      valueName: 'current',
+      valueName: 'avg',
+      valueNameOptions: [
+        { text: "Min", value: "min" },
+        { text: "Max", value: "max" },
+        { text: "Average", value: "avg" },
+        { text: "Current", value: "current" },
+        { text: "Total", value: "total" }
+      ],
       strokeWidth: 1,
       fontSize: '60%',
       combine: {
@@ -94,9 +101,11 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       });
       let colors = this.panel.colors;
       let separator = this.panel.separator;
+      let valueName = this.panel.valueName;
       // Parse all the series into their buckets
       angular.forEach(series, function(datapoint) {
-      var datavalue = Number(datapoint.stats.current).toFixed(1);
+      var agg = datapoint.stats[valueName];
+      var datavalue = Number(agg).toFixed(1);
       let [yCat, xCat] = datapoint.label.split(separator);
       yCats.add(yCat);
       xCats.add(xCat);
