@@ -471,7 +471,7 @@ babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.26.0:
 
 babel@~6.5.1:
   version "6.5.2"
-  resolved "http://registry.npmjs.org/babel/-/babel-6.5.2.tgz#59140607438270920047ff56f02b2d8630c2d129"
+  resolved "https://registry.npmjs.org/babel/-/babel-6.5.2.tgz#59140607438270920047ff56f02b2d8630c2d129"
 
 babylon@^6.18.0:
   version "6.18.0"
@@ -950,9 +950,9 @@ load-grunt-tasks@~3.2.0:
     findup-sync "^0.2.1"
     multimatch "^2.0.0"
 
-lodash@^4.0.1, lodash@^4.17.4:
-  version "4.17.5"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
+lodash@^4.0.1, lodash@^4.17.4, lodash@~4.17.13:
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.13.tgz#0bdc3a6adc873d2f4e0c4bac285df91b64fc7b93"
 
 lodash@~0.9.2:
   version "0.9.2"
@@ -965,10 +965,6 @@ lodash@~1.0.1:
 lodash@~2.4.1:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
-
-lodash@~4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.0.1.tgz#cd8c902c9e03f2e69ce3e0e456d505ab89eb98f4"
 
 longest@^1.0.1:
   version "1.0.1"
