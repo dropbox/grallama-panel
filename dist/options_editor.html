@@ -38,4 +38,11 @@
       <input type="text" class="gf-form-input max-width-10" ng-model="ctrl.panel.separator" ng-blur="ctrl.render()">
     </div>
   </div>
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Aggregation</h5>
+    <div class="gf-form">
+      <span class="gf-form-label width-8">Stat</span>
+      <select class="gf-form-input width-18" ng-model="ctrl.panel.valueName" ng-options="f.value as f.text for f in ctrl.panel.valueNameOptions" ng-change="ctrl.render()"></select>
+    </div>
+  </div>
 </div>
