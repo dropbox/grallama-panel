@@ -47,6 +47,9 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       xAxisLabel: 'X-Axis',
       yAxisLabel: 'Y-Axis',
       separator: '-',
+      healthCheckThreshold: '0.2',
+      healthCheckOperator: '<',
+      healthCheckOperatorOptions: [{ text: "<", value: "<" }, { text: ">=", value: ">=" }, { text: "=", value: "=" } ]
     };
 
     _.defaults(this.panel, panelDefaults);
@@ -86,10 +89,25 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
     this.matrix = this.parseMatrix(this.series);
   }
 
+  performHealthCheck(dataValue, op, threshold) {
+    if (op == '=') {
+      return dataValue == threshold
+    } else if(op == '<') {
+      return dataValue < threshold
+    } else {
+      return dataValue >= threshold
+    }
+  }
+
   parseMatrix(series) {
       var matrix = {};
       matrix['data'] = {}; // Raw data
       matrix['cells'] = []; // Cells to render
+      matrix['summary_cell'] = { style: {},
+                                 value: '',
+                                 numUnhealthy: 0,
+                               } // Summary about matrix (i.e how many numbers are too small/big)
+
       // Unique values for each row and column
       var yCats = new Set();
       var xCats = new Set();
@@ -102,10 +120,18 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       let colors = this.panel.colors;
       let separator = this.panel.separator;
       let valueName = this.panel.valueName;
+
+      var numUnhealthyCells = 0;
+      let op = this.panel.healthCheckOperator;
+      let threshold = this.panel.healthCheckThreshold;
+
       // Parse all the series into their buckets
       angular.forEach(series, function(datapoint) {
       var agg = datapoint.stats[valueName];
       var datavalue = Number(agg).toFixed(1);
+      if (!_this2.performHealthCheck(datavalue, op, threshold)) {
+        numUnhealthyCells += 1;
+      }
       let [yCat, xCat] = datapoint.label.split(separator);
       yCats.add(yCat);
       xCats.add(xCat);
@@ -116,6 +142,16 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
       matrix.data[yCat][xCat] = datavalue;
       });
 
+      if (numUnhealthyCells > 0) {
+        matrix['summary_cell']['style']['color'] = 'red';
+        matrix['summary_cell']['value'] = 'x';
+      }
+      else {
+        matrix['summary_cell']['style']['color'] = 'green';
+        matrix['summary_cell']['value'] = '✓';
+      }
+      matrix['summary_cell']['numUnhealthy'] = numUnhealthyCells;
+      
       // Sort the axis categories
       yCats = Array.from(yCats).sort();
       xCats = Array.from(xCats).sort();

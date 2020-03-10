@@ -1,6 +1,17 @@
 <div class="graph-wrapper">
   <div class="graph-canvas-wrapper">
     <div class="matrix-panel">
+      <div class="grid-cell summary_cell" ng-if="ctrl.matrix !== undefined && ctrl.matrix.cells.length != 0" ng-style="ctrl.matrix.summary_cell.style" style="grid-area: 1 / 1 / auto / auto;">	
+          {{ ctrl.matrix.summary_cell.value }}	
+        <span class="matrix-tooltip" ng-if="ctrl.matrix.summary_cell.numUnhealthy > 0">	
+          There	
+          <span ng-if="ctrl.matrix.summary_cell.numUnhealthy == 1">is {{ ctrl.matrix.summary_cell.numUnhealthy }} unhealthy cell</span>	
+          <span ng-if="ctrl.matrix.summary_cell.numUnhealthy > 1">are {{ ctrl.matrix.summary_cell.numUnhealthy }} unhealthy cells</span>	
+        </span>	
+        <span class="matrix-tooltip" ng-if="ctrl.matrix.summary_cell.numUnhealthy == 0">	
+          All cells are healthy!	
+        </span>	
+      </div>
       <div class="grid-cell" ng-repeat="cell in ctrl.matrix.cells" ng-style="cell.style">
         {{ cell.value }}
         <span class="matrix-tooltip" ng-if="cell.tooltip">

@@ -45,4 +45,12 @@
       <select class="gf-form-input width-18" ng-model="ctrl.panel.valueName" ng-options="f.value as f.text for f in ctrl.panel.valueNameOptions" ng-change="ctrl.render()"></select>
     </div>
   </div>
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Health Check</h5>
+    <div class="gf-form">
+      <span class="gf-form-label width-8">Condition</span>
+      <select class="gf-form-input width-4" ng-model="ctrl.panel.healthCheckOperator" ng-options="f.value as f.text for f in ctrl.panel.healthCheckOperatorOptions" ng-change="ctrl.render()"></select>
+      <select class="gf-form-input width-6" ng-model="ctrl.panel.healthCheckThreshold" ng-options="threshold for threshold in ctrl.panel.thresholds.split(',')" ng-change="ctrl.render()"></select>
+    </div>
+  </div>
 </div>

@@ -144,7 +144,10 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             thresholds: '0,0.2,1,5,99',
             xAxisLabel: 'X-Axis',
             yAxisLabel: 'Y-Axis',
-            separator: '-'
+            separator: '-',
+            healthCheckThreshold: '0.2',
+            healthCheckOperator: '<',
+            healthCheckOperatorOptions: [{ text: "<", value: "<" }, { text: ">=", value: ">=" }, { text: "=", value: "=" }]
           };
 
           _.defaults(_this.panel, panelDefaults);
@@ -191,15 +194,30 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             this.matrix = this.parseMatrix(this.series);
           }
         }, {
+          key: 'performHealthCheck',
+          value: function performHealthCheck(dataValue, op, threshold) {
+            if (op == '=') {
+              return dataValue == threshold;
+            } else if (op == '<') {
+              return dataValue < threshold;
+            } else {
+              return dataValue >= threshold;
+            }
+          }
+        }, {
           key: 'parseMatrix',
           value: function parseMatrix(series) {
-            var _this2 = this;
+            var _this3 = this;
 
             var matrix = {};
             matrix['data'] = {}; // Raw data
             matrix['cells'] = []; // Cells to render
-            // Unique values for each row and column
-            var yCats = new Set();
+            matrix['summary_cell'] = { style: {},
+              value: '',
+              numUnhealthy: 0 // Summary about matrix (i.e how many numbers are too small/big)
+
+              // Unique values for each row and column
+            };var yCats = new Set();
             var xCats = new Set();
             // These are needed for referencing in loops below
             var colorBackground = this.panel.colorBackground;
@@ -210,10 +228,18 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             var colors = this.panel.colors;
             var separator = this.panel.separator;
             var valueName = this.panel.valueName;
+
+            var numUnhealthyCells = 0;
+            var op = this.panel.healthCheckOperator;
+            var threshold = this.panel.healthCheckThreshold;
+
             // Parse all the series into their buckets
             angular.forEach(series, function (datapoint) {
               var agg = datapoint.stats[valueName];
               var datavalue = Number(agg).toFixed(1);
+              if (!_this2.performHealthCheck(datavalue, op, threshold)) {
+                numUnhealthyCells += 1;
+              }
 
               var _datapoint$label$spli = datapoint.label.split(separator),
                   _datapoint$label$spli2 = _slicedToArray(_datapoint$label$spli, 2),
@@ -228,6 +254,15 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
               }
               matrix.data[yCat][xCat] = datavalue;
             });
+
+            if (numUnhealthyCells > 0) {
+              matrix['summary_cell']['style']['color'] = 'red';
+              matrix['summary_cell']['value'] = 'x';
+            } else {
+              matrix['summary_cell']['style']['color'] = 'green';
+              matrix['summary_cell']['value'] = '✓';
+            }
+            matrix['summary_cell']['numUnhealthy'] = numUnhealthyCells;
 
             // Sort the axis categories
             yCats = Array.from(yCats).sort();
@@ -305,7 +340,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
                       'yCat': yCat,
                       'xCat': xCat,
                       'value': value,
-                      'tooltip': _this2.panel.tooltipHover,
+                      'tooltip': _this3.panel.tooltipHover,
                       'style': {
                         // These must be strings, otherwise they get silently ignored
                         'grid-row': rowNum.toString(),
@@ -369,13 +404,13 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
         }, {
           key: 'parseSeries',
           value: function parseSeries(series) {
-            var _this3 = this;
+            var _this4 = this;
 
             return _.map(this.series, function (serie, i) {
               return {
                 label: serie.alias,
-                data: serie.stats[_this3.panel.valueName],
-                color: _this3.panel.aliasColors[serie.alias] || _this3.$rootScope.colors[i]
+                data: serie.stats[_this4.panel.valueName],
+                color: _this4.panel.aliasColors[serie.alias] || _this4.$rootScope.colors[i]
               };
             });
           }
@@ -429,11 +464,11 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
         }, {
           key: 'onColorChange',
           value: function onColorChange(panelColorIndex) {
-            var _this4 = this;
+            var _this5 = this;
 
             return function (color) {
-              _this4.panel.colors[panelColorIndex] = color;
-              _this4.render();
+              _this5.panel.colors[panelColorIndex] = color;
+              _this5.render();
             };
           }
         }]);

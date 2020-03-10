@@ -54,3 +54,7 @@
 .grid-cell:hover .matrix-tooltip {
   visibility: visible;
 }
+
+.summary_cell {
+    text-align:center;
+}
