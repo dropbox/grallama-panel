@@ -207,8 +207,9 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
         }, {
           key: 'parseMatrix',
           value: function parseMatrix(series) {
-            var _this3 = this;
+            var _this2 = this;
 
+            var that = this;
             var matrix = {};
             matrix['data'] = {}; // Raw data
             matrix['cells'] = []; // Cells to render
@@ -237,7 +238,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             angular.forEach(series, function (datapoint) {
               var agg = datapoint.stats[valueName];
               var datavalue = Number(agg).toFixed(1);
-              if (!_this2.performHealthCheck(datavalue, op, threshold)) {
+              if (!that.performHealthCheck(datavalue, op, threshold)) {
                 numUnhealthyCells += 1;
               }
 
@@ -340,7 +341,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
                       'yCat': yCat,
                       'xCat': xCat,
                       'value': value,
-                      'tooltip': _this3.panel.tooltipHover,
+                      'tooltip': _this2.panel.tooltipHover,
                       'style': {
                         // These must be strings, otherwise they get silently ignored
                         'grid-row': rowNum.toString(),
@@ -404,13 +405,13 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
         }, {
           key: 'parseSeries',
           value: function parseSeries(series) {
-            var _this4 = this;
+            var _this3 = this;
 
             return _.map(this.series, function (serie, i) {
               return {
                 label: serie.alias,
-                data: serie.stats[_this4.panel.valueName],
-                color: _this4.panel.aliasColors[serie.alias] || _this4.$rootScope.colors[i]
+                data: serie.stats[_this3.panel.valueName],
+                color: _this3.panel.aliasColors[serie.alias] || _this3.$rootScope.colors[i]
               };
             });
           }
@@ -464,11 +465,11 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
         }, {
           key: 'onColorChange',
           value: function onColorChange(panelColorIndex) {
-            var _this5 = this;
+            var _this4 = this;
 
             return function (color) {
-              _this5.panel.colors[panelColorIndex] = color;
-              _this5.render();
+              _this4.panel.colors[panelColorIndex] = color;
+              _this4.render();
             };
           }
         }]);
