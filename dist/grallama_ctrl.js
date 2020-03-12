@@ -209,6 +209,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
           value: function parseMatrix(series) {
             var _this3 = this;
 
+            var that = this;
             var matrix = {};
             matrix['data'] = {}; // Raw data
             matrix['cells'] = []; // Cells to render
@@ -237,7 +238,7 @@ System.register(['app/plugins/sdk', 'lodash', 'app/core/utils/kbn', 'app/core/ti
             angular.forEach(series, function (datapoint) {
               var agg = datapoint.stats[valueName];
               var datavalue = Number(agg).toFixed(1);
-              if (!_this2.performHealthCheck(datavalue, op, threshold)) {
+              if (!that.performHealthCheck(datavalue, op, threshold)) {
                 numUnhealthyCells += 1;
               }
 
