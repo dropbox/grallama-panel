@@ -124,7 +124,7 @@ export class GraLLAMACtrl extends MetricsPanelCtrl {
 
       var numUnhealthyCells = 0;
       let op = this.panel.healthCheckOperator;
-      let threshold = this.panel.healthCheckThreshold;
+      let threshold = parseFloat(this.panel.healthCheckThreshold);
 
       // Parse all the series into their buckets
       angular.forEach(series, function(datapoint) {
