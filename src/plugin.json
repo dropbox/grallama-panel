@@ -1,31 +1,28 @@
 {
   "type": "panel",
-  "name": "GraLLAMA",
-  "id": "dropbox-grallama-panel",
-
+  "name": "Grallama Graph",
+  "id": "grallama-panel",
   "info": {
-    "description": "Matrix-like display for LLAMA data",
+    "description": "Graph visualization panel for Grafana",
     "author": {
-      "name": "Dropbox, Inc."
+      "name": "Your Name",
+      "url": "https://example.com"
     },
-    "keywords": ["llama", "loss", "latency", "matrix", "panel"],
+    "keywords": ["graph", "visualization", "panel"],
     "logos": {
-      "small": "src/img/grallama-logo-small.png",
-      "large": "src/img/grallama-logo-large.png"
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
     },
     "links": [
-      {"name": "Project site", "url": "https://github.com/dropbox/grallama-panel"},
-      {"name": "Apache 2.0 License", "url": "https://github.com/dropbox/grallama-panel/blob/master/LICENSE"}
+      {"name": "GitHub", "url": "https://github.com/yourusername/grallama-panel"},
+      {"name": "License", "url": "https://github.com/yourusername/grallama-panel/blob/master/LICENSE"}
     ],
-    "screenshots": [
-        {"name": "Example1", "path": "src/img/grallama-example.png"}
-    ],
-    "version": "0.1.2",
-    "updated": "2019-07-02"
+    "screenshots": [],
+    "version": "2.0.0",
+    "updated": "2023-05-01"
   },
-
   "dependencies": {
-    "grafanaVersion": "3.x.x",
-    "plugins": [ ]
+    "grafanaDependency": ">=8.0.0",
+    "plugins": []
   }
 }
