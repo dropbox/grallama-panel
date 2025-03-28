@@ -1,30 +1,28 @@
 {
   "type": "panel",
-  "name": "Grallama Panel",
-  "id": "dropbox-grallama-panel",
+  "name": "Grallama Graph",
+  "id": "grallama-panel",
   "info": {
-    "description": "Grallama panel for Grafana",
+    "description": "Graph visualization panel for Grafana",
     "author": {
-      "name": "Dropbox",
-      "url": "https://github.com/dropbox/grallama-panel"
+      "name": "Your Name",
+      "url": "https://example.com"
     },
-    "keywords": ["panel", "grallama"],
+    "keywords": ["graph", "visualization", "panel"],
     "logos": {
-      "small": "img/grallama.svg",
-      "large": "img/grallama.svg"
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
     },
     "links": [
-      {
-        "name": "GitHub",
-        "url": "https://github.com/dropbox/grallama-panel"
-      }
+      {"name": "GitHub", "url": "https://github.com/yourusername/grallama-panel"},
+      {"name": "License", "url": "https://github.com/yourusername/grallama-panel/blob/master/LICENSE"}
     ],
     "screenshots": [],
     "version": "2.0.0",
-    "updated": "2023-06-15"
+    "updated": "2023-05-01"
   },
   "dependencies": {
-    "grafanaDependency": ">=9.5.0",
+    "grafanaDependency": ">=8.0.0",
     "plugins": []
   }
 }

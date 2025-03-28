@@ -1,7 +1,7 @@
 {
-  "name": "dropbox-grallama-panel",
+  "name": "grallama-panel",
   "version": "2.0.0",
-  "description": "Grallama Panel for Grafana",
+  "description": "Graph visualization panel for Grafana",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
@@ -9,13 +9,21 @@
     "watch": "grafana-toolkit plugin:dev --watch",
     "sign": "grafana-toolkit plugin:sign"
   },
-  "author": "Dropbox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/grallama-panel.git"
+  },
+  "author": "Prashanth Padmasola",
   "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/yourusername/grallama-panel/issues"
+  },
   "devDependencies": {
-    "@grafana/data": "^9.5.0",
-    "@grafana/toolkit": "^9.5.0",
-    "@grafana/ui": "^9.5.0",
-    "@types/d3": "^7.4.0"
+    "@grafana/data": "latest",
+    "@grafana/toolkit": "latest",
+    "@grafana/ui": "latest",
+    "@types/d3": "^7.4.0",
+    "emotion": "^11.0.0"
   },
   "dependencies": {
     "d3": "^7.8.5"
